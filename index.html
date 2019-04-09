@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Desafio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <div class="tabela">
+        <table id="tabela">
+            <tr>
+                <th>Nome</th>
+                <th>Sobrenome</th>
+            </tr>
+            <div class="nomes" id="nomes">
+                <!-- <tr>
+                    <td>Eduardo</td>
+                    <td>Benitez</td>
+                </tr> -->
+            </div>
+        </table>
+    </div>
+    <br>
+    <div class="formulario">
+        <h1>Nome</h1>
+        <input type="text" name="nome" placeholder="Nome" id="nome" value="">
+        <h1>Sobrenome</h1>
+        <input type="text" name="sobrenome" placeholder="Sobrenome" id="sobrenome" value="">
+        <br><br>
+        <div id="botaoenviar">
+            <button id="enviar" class="submit" onclick="adicionarRow()">Enviar</button>
+            <button id="atualizar" class="submit" onclick="">Atualizar</button>
+            <button id="deletar" class="submit" onlick="">Deletar</button>
+        </div>
+        <script>
+
+            var l1 = 0
+
+            //Ler a informação da linha que o usuário clicou
+            function lerTable() {
+                table1 = document.getElementById("tabela");
+                if (table1 != null) {
+                    for (var i = 0; i < table1.rows.length; i++) {
+                        for (var j = 0; j < table1.rows[i].cells.length; j++)
+                            table1.rows[i].cells[j].onclick = function () {
+                                tableText(this);
+                            };
+                    }
+                }
+            }
+
+            //Função para adicionar o Nome e Sobrenome dado pelo usuário
+            function adicionarRow() {
+                var table, row, nomer, sobrenomer, table1;
+
+                //Checa se o input nome tem algo escrito, caso contrario pede pro usuário informar um nome
+                if (document.getElementById("nome").value.length == 0) {
+                    alert("Por favor preencha o nome ");
+                    return false;
+                }
+
+                //Checa se o input sobrenome tem algo escrito, caso contrario pede pro usuário informar um sobrenome
+                if (document.getElementById("sobrenome").value.length == 0) {
+                    alert("Por favor preencha com um sobrenome");
+                    return false;
+                }
+
+                //Pega as informações da tabela
+                table = document.getElementById("tabela");
+
+
+                //Insere uma Row na terceira linha (Começa a contar pelo 0)
+                row = table.insertRow(1);
+                row.setAttribute("id", l1) 
+                // row.setAttribute("id", qntid++);
+                // qntid = qntid++
+
+                //Insere uma celula a esquerda com o nome dado no input
+                nomer = row.insertCell(0);
+                nomer.innerHTML = document.getElementById("nome").value
+                console.log(l1)
+                //nomer.setAttribute("id", l1);
+                document.getElementById("nome").value = ""
+
+
+                //Insere uma celula a direita com o sobrenome dado no input
+                sobrenomer = row.insertCell(1);
+                sobrenomer.innerHTML = document.getElementById("sobrenome").value;
+                //sobrenomer.setAttribute("id",l1);
+                document.getElementById("sobrenome").value = "";
+
+                //Seta o ID do nome inserido
+
+
+                document.getElementById("atualizar").setAttribute("onclick", "");
+
+                //Atualização a função para ler a table
+                lerTable()
+                table1 = document.getElementById("tabela");
+                l1++
+            };
+
+            //Cria variável que irá guardar a ID da linha da tabela
+            var editValor
+
+            //Alerta que informa o texto clicado pelo usuário, apenas para teste
+            function tableText(tableCell) {
+
+                //Pega as informações da tabela, todos os elementos
+                var textoForm = tableCell.parentElement.childNodes
+                //console.log (textoForm)
+
+                //Pega o nome e sobrenome clicado da tabela e substitui no input
+                //Caso teja um length de 5 informações faz esse comando
+                // if (textoForm.length == 5)
+                // {
+                //     document.getElementById("nome").value = textoForm[1].innerHTML;
+                //     document.getElementById("sobrenome").value = textoForm[3].innerHTML;
+                //     // console.log(textoForm[1].innerHTML);
+                //     // console.log(textoForm[3].innerHTML);
+                //     // console.log(tableCell.parentElement.childNodes)
+                //     document.getElementById("atualizar").setAttribute("onclick", "attInfo()");
+                // }
+
+                //Caso teja um length de 2 informações faz esse comando (Ja que o titulo tem um length de 5, o usuário não podera edita-lo)
+                if  (textoForm.length == 2)
+                {
+                    document.getElementById("nome").value = textoForm[0].innerHTML;
+                    document.getElementById("sobrenome").value = textoForm[1].innerHTML;
+                        // console.log(textoForm[0].innerHTML);
+                        // console.log(textoForm[1].innerHTML);
+                        // console.log(tableCell.parentElement.childNodes)
+                        // console.log(tableCell.parentElement)
+                    editValor = tableCell.parentElement.id;
+                    //console.log(editValor)
+
+                    //Atribui as funções aos botões para fazer sua devida função
+                    document.getElementById("atualizar").setAttribute("onclick", "attInfo()");
+                    document.getElementById("deletar").setAttribute("onclick", "delInfo()");
+
+                    //Remove a função de adicionar a linha à tabela para que o usuário não tenha linhas duplicadas ao invés de editar ou deletar
+                    document.getElementById("enviar").setAttribute("onclick", "")
+                }
+                //alert(tableCell.parentElement.innerHTML);
+
+            }
+
+            //Faz a função para ler a table caso o usuário queira editar uma informação sem adicionar algum nome e sobrenome antes
+            lerTable();
+
+            //Função do botão de atualizar
+            function attInfo(){
+                //nomeedit = document.getElementById("nome").value;
+
+                //Pega o primeiro "child" da tabela e edita pelo valor dentro do campo de nome
+                document.getElementById(editValor).childNodes[0].innerHTML = document.getElementById("nome").value
+                
+                //Pega o segundo "child" da tabela e edita pelo valor dentro do campo de sobrenome
+                document.getElementById(editValor).childNodes[1].innerHTML = document.getElementById("sobrenome").value
+                
+                //sobrenomeedit = document.getElementById("sobrenome").value;
+
+                //Limpa o campo de nome e sobrenome após fazer sua função
+                document.getElementById("nome").value = "";
+                document.getElementById("sobrenome").value = "";
+
+                //Tira a função do botão para não fazendo nada até ser selecionado uma linha novamente
+                document.getElementById("atualizar").setAttribute("onclick", "");
+
+                //Coloca a função de adicionar informações de volta a tabela após de ter editado a linha desejada
+                document.getElementById("enviar").setAttribute("onclick", "adicionarRow()")
+            }
+
+            //Função do botão de deletar
+            function delInfo(){
+                //console.log(editValor);
+                //document.getElementById(editvalor).parentNode.removeChild(0);
+                //document.getElementById(editvalor).parentNode.removeChild(1);
+
+                //Cria uma variavel que pega o ID da linha selecionada e remove o child dessa linha
+                var linha = document.getElementById(editValor)
+                linha.parentNode.removeChild(linha)
+                //document.getElementById(editValor).deleteRow(1);
+
+                //Limpa o campo de nome e sobrenome após fazer sua função
+                document.getElementById("nome").value = "";
+                document.getElementById("sobrenome").value = "";
+
+                //Tira a função do botão para não fazendo nada até ser selecionado uma linha novamente
+                document.getElementById("deletar").setAttribute("onclick", "");
+
+                //Coloca a função de adicionar informações de volta a tabela após de ter deletado a linha desejada
+                document.getElementById("enviar").setAttribute("onclick", "adicionarRow()")
+            }
+        </script>
+</body>
+
+</html>
